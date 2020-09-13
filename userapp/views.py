@@ -61,7 +61,7 @@ class UserAPIView(APIView):
         name = request.query_params.get('name')
         pwd = request.GET.get('pwd')
         user = User.objects.filter(pk=id)
-        if user:
+        try:
             user[0].name = name
             user[0].pwd = pwd
             user[0].save()
@@ -70,7 +70,7 @@ class UserAPIView(APIView):
                 'message': 'ok',
                 'results': {'username': user[0].name}
             })
-        else:
+        except:
             return Response({
                 'status': 500,
                 'message': '更新失败',
