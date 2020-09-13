@@ -55,3 +55,24 @@ class UserAPIView(APIView):
                 'status': 500,
                 'message': '注册失败'
             })
+
+    def put(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        name = request.query_params.get('name')
+        pwd = request.GET.get('pwd')
+        user = User.objects.filter(pk=id)
+        if user:
+            user[0].name = name
+            user[0].pwd = pwd
+            user[0].save()
+            return Response({
+                'status': 200,
+                'message': 'ok',
+                'results': {'username': user[0].name}
+            })
+        else:
+            return Response({
+                'status': 500,
+                'message': '更新失败',
+            })
+
