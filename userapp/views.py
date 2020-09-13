@@ -35,3 +35,23 @@ class UserAPIView(APIView):
                 'message': 'ok',
                 'results': list(users)
             })
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST.get('name'))
+        print(request.POST.get('pwd'))
+        name = request.data.get('name')
+        pwd = request.data.get('pwd')
+        print(name, pwd)
+        print(request.data)
+        try:
+            user = User.objects.create(name=name, pwd=pwd)
+            return Response({
+                'status': 200,
+                'message': 'ok',
+                'results':{'username': user.name}
+            })
+        except:
+            return Response({
+                'status': 500,
+                'message': '注册失败'
+            })
